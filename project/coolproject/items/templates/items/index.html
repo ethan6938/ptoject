@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Cool Things</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'items/styles.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script> <!-- Include HTMX -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let csrfToken = document.querySelector('meta[name="csrf-token"]');
+    
+            if (csrfToken) {
+                document.body.addEventListener('htmx:configRequest', function (event) {
+                    event.detail.headers['X-CSRFToken'] = csrfToken.content;
+                });
+            } else {
+                console.error("CSRF token not found in meta tag.");
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Cool Things</h1>
+
+    <!-- HTMX: When clicked, dynamically load the add form into the #things container -->
+    <a href="{% url 'add_thing' %}" hx-get="{% url 'add_thing' %}" hx-target="#things-form" hx-swap="beforeend">Add New Thing</a>
+
+    <div id="things-form">
+
+    </div>
+
+    <div id="things-list">
+        {% for thing in things %}
+            <div class="thing" id="thing-{{ thing.id }}">
+                <h2>{{ thing.name }}</h2>
+                <p>{{ thing.description }}</p>
+
+                <!-- Edit Button: HTMX to load the edit form into the #thing-{{ thing.id }} container -->   
+                <a href="{% url 'edit_thing' thing.id %}" hx-get="{% url 'edit_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="outerHTML">Edit</a>
+
+                <!-- Delete Button: HTMX to remove the thing from the list -->
+                <a href="{% url 'delete_thing' thing.id %}" hx-get="{% url 'delete_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="delete">Delete</a>
+
+                <h3>Comments:</h3>
+                <!-- Add Comment Button: HTMX to dynamically add a comment without page reload -->
+                <a href="{% url 'add_comment' thing.id %}" hx-get="{% url 'add_comment' thing.id %}" hx-target="#comments-form-{{ thing.id }}" hx-swap="innerHTML">Add Comment</a>
+                
+                <div id="comments-form-{{ thing.id }}">
+
+                </div>
+                
+                <div id="comments-{{ thing.id }}">
+                    {% for comment in thing.comments.all %}
+                    <div id="comment-{{ comment.id }}">
+                        <p>{{ comment.text }}</p>
+                        <button href="{% url 'delete_comment' comment.id %}"
+                                hx-get="{% url 'delete_comment' comment.id %}"        
+                                hx-target="#comment-{{ comment.id }}" 
+                                hx-swap="delete">
+                            Delete
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        document.body.addEventListener('htmx:afterRequest', function(event) {
+            if (event.target.tagName === 'FORM') {
+                event.target.reset();  // Clears the form after submission
+            }
+        });
+    </script>
+    <script>
+        document.body.addEventListener('htmx:afterRequest', function(event) {
+            if (event.target.tagName === 'FORM' && event.detail.xhr.status === 200) {
+                // Form was successfully submitted, now remove it
+                event.target.remove();
+            }
+        });
+    </script>
+</body>
+</html>

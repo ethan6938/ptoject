@@ -1,0 +1,5 @@
+<form hx-post="{% url 'add_thing' %}" hx-target="#things-list" hx-swap="beforeend" hx-on::after-request="setTimeout(() => this.reset(), 10)">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Thing</button>
+</form>

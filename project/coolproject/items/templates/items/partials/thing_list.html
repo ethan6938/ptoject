@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Things</title>
+    <link rel="stylesheet" href="{% static 'items/styles.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+</head>
+
+<body>
+
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+
+    <h1>Cool Things</h1>
+
+    <a id="Things" 
+    href="{% url 'add_thing' %}" 
+    hx-get="{% url 'add_thing' %}" 
+    hx-target="#add-thing-form" 
+    hx-swap="innerHTML"
+    onclick="this.style.display='none'; document.getElementById('add-thing-form').style.display='block';">
+    Add New Thing
+ </a>
+ 
+ <!-- Hidden container for the form -->
+ <div id="add-thing-form" style="display: block;"></div>
+ 
+ <!-- Container for all things -->
+     {% for thing in things %}
+         {% include 'items/partials/thing.html' %}
+     {% endfor %}
+ </div>
+ 
+
+</body>
+
+</html>

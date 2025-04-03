@@ -1,0 +1,56 @@
+<!-- Thing Form -->
+<div id="thing-container">
+    <form id="thing-form" 
+          hx-post="{% url 'add_thing' %}" 
+          hx-target="#thing-list" 
+          hx-swap="beforeend"
+          hx-on="htmx:afterRequest: hideForm('thing-container')">
+        {% csrf_token %}
+        {{ thing_form.as_p }}
+        <button type="submit">Add Thing</button>
+    </form>
+</div>
+
+<div id="thing-list">
+    <!-- New Things will appear here -->
+</div>
+
+<!-- Comment Form -->
+<div id="comment-container">
+    <form id="comment-form" 
+          hx-post="{% url 'add_comment' %}" 
+          hx-target="#comment-list" 
+          hx-swap="beforeend"
+          hx-on="htmx:afterRequest: hideForm('comment-container')">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Add Comment</button>
+    </form>
+</div>
+
+<div id="comment-list">
+    <!-- New Comments will appear here -->
+</div>
+
+<!-- Buttons to Show Forms Again -->
+<button onclick="showForm('thing-container')">Add New Thing</button>
+<button onclick="showForm('comment-container')">Add New Comment</button>
+
+<!-- Include HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+
+<!-- CSRF Token Fix -->
+<meta name="csrf-token" content="{{ csrf_token }}">
+<script>
+    document.body.addEventListener('htmx:configRequest', function(event) {
+        event.detail.headers['X-CSRFToken'] = document.querySelector('meta[name="csrf-token"]').content;
+    });
+
+    function hideForm(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function showForm(id) {
+        document.getElementById(id).style.display = 'block';
+    }
+</script>
