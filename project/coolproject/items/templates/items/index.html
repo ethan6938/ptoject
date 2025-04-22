@@ -39,14 +39,14 @@
                 <p>{{ thing.description }}</p>
 
                 <!-- Edit Button: HTMX to load the edit form into the #thing-{{ thing.id }} container -->   
-                <a href="{% url 'edit_thing' thing.id %}" hx-get="{% url 'edit_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="outerHTML">Edit</a>
+                <a hx-get="{% url 'edit_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="outerHTML">Edit</a>
 
                 <!-- Delete Button: HTMX to remove the thing from the list -->
-                <a href="{% url 'delete_thing' thing.id %}" hx-get="{% url 'delete_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="delete">Delete</a>
+                <a hx-get="{% url 'delete_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="delete">Delete</a>
 
                 <h3>Comments:</h3>
                 <!-- Add Comment Button: HTMX to dynamically add a comment without page reload -->
-                <a href="{% url 'add_comment' thing.id %}" hx-get="{% url 'add_comment' thing.id %}" hx-target="#comments-form-{{ thing.id }}" hx-swap="innerHTML">Add Comment</a>
+                <a hx-get="{% url 'add_comment' thing.id %}" hx-target="#comments-form-{{ thing.id }}" hx-swap="innerHTML">Add Comment</a>
                 
                 <div id="comments-form-{{ thing.id }}">
 
