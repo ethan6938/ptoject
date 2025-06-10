@@ -1,4 +1,0 @@
-<form id="comments-form-{{ thing.id }}" hx-post="{% url 'add_comment' thing.id %}" hx-target="#comments-{{ thing.id }}" hx-swap="beforeend">
-    {{ form.as_p }}
-    <button onclick="this.style.display='none';document.getElementById('comments-form-{{ thing.id }}').style.display='block';">Add</button>
-</form>

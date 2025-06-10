@@ -1,6 +1,0 @@
-<div id="thing-{{ thing.id }}">
-    {% include "partials/thing_detail.html" %}
-    <button hx-get="{% url 'edit_thing' thing.id %}" hx-target="#thing-{{ thing.id }}" hx-swap="outerHTML">
-        Edit
-    </button>
-</div>

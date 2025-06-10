@@ -1,9 +1,0 @@
-<div id="comment-{{ comment.id }}">
-    <p>{{ comment.text }}</p>
-    <button href="{% url 'delete_comment' comment.id %}"
-        hx-get="{% url 'delete_comment' comment.id %}"        
-        hx-target="#comment-{{ comment.id }}" 
-        hx-swap="delete">
-    Delete
-    </button>
-</div>
