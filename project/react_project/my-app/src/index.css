@@ -1,13 +1,26 @@
+/* Reset margin and set a clean base font */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 1rem 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #222;
+  background: #f9fafb; /* subtle off-white background */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Styling for inline code blocks */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  background: #eaeaea;  /* light gray background */
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #d6336c; /* nice pink/red accent */
+  white-space: nowrap;
 }

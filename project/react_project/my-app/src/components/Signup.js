@@ -1,46 +1,61 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import './Dashboard.css';
 
-function Signup() {
+function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setError('');
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Registration successful! You can now log in.');
-      // Optional: redirect to login page here
+      navigate('/dashboard'); // Redirect to dashboard after signup
     } catch (error) {
-      setError(error.message);
+      alert(error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSignup}>
-      <h2>Sign Up</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password (6+ characters)"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Register</button>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-    </form>
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Sign Up</h2>
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={e => setConfirmPassword(e.target.value)}
+          placeholder="Confirm Password"
+          required
+        />
+        <button onClick={handleSignUp}>Sign Up</button>
+        <div className="extra-links">
+          Already have an account? <a href="/login">Login</a>
+        </div>
+      </div>
+    </div>
   );
 }
 
-
-export default Signup;
+export default SignUp;
