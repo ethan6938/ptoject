@@ -38,9 +38,9 @@ function Login() {
         />
         <button onClick={handleLogin}>Login</button>
         {/* Optional extra links */}
-        {/* <div className="extra-links">
+        { <div className="extra-links">
           <a href="/forgot-password">Forgot Password?</a> | <a href="/signup">Sign Up</a>
-        </div> */}
+        </div> }
       </div>
     </div>
   );
